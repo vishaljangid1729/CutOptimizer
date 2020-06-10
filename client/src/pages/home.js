@@ -19,6 +19,27 @@ import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined"
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline"
 
 export class Home extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            inputValue: [
+                {
+                    "length": null,
+                    "quantity": null
+                }
+            ]
+        }
+    }
+    addRow = () =>{
+        this.setState(previousState => ({
+            inputValue: [...previousState.inputValue, {"length": null, "quantity": null}]
+        }))
+    }
+    removeRow = (index) =>{
+        let array = [...this.state.inputValue]
+        array.splice(index, 1);
+        this.setState({inputValue: array});
+    }
     render() {
         // const cardStyle = useStyles();
         return (
@@ -89,9 +110,10 @@ export class Home extends React.Component {
                                     </TableHead>
 
                                     <TableBody>
-                                        <TableRow>
+                                        {this.state.inputValue.map((value, index) =>
+                                            <TableRow key = {index}>
                                             <TableCell padding='none'>
-                                                1.
+                                                {index + 1}
                                             </TableCell>
                                             <TableCell>
                                                 <TextField
@@ -112,65 +134,16 @@ export class Home extends React.Component {
                                                 <HighlightOffOutlinedIcon
                                                     color='error'
                                                     margin='dense'
+                                                    onClick = {() => this.removeRow(index)}
                                                 ></HighlightOffOutlinedIcon>
                                             </TableCell>
                                         </TableRow>
-                                        <TableRow>
-                                            <TableCell padding='none'>
-                                                1.
-                                            </TableCell>
-                                            <TableCell>
-                                                <TextField
-                                                    variant='outlined'
-                                                    margin='dense'
-                                                    type='number'
-                                                ></TextField>
-                                            </TableCell>
-                                            <TableCell>
-                                                <TextField
-                                                    variant='outlined'
-                                                    margin='dense'
-                                                    type='number'
-                                                ></TextField>
-                                            </TableCell>
-
-                                            <TableCell>
-                                                <HighlightOffOutlinedIcon
-                                                    color='error'
-                                                    margin='dense'
-                                                ></HighlightOffOutlinedIcon>
-                                            </TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell padding='none'>
-                                                1.
-                                            </TableCell>
-                                            <TableCell>
-                                                <TextField
-                                                    variant='outlined'
-                                                    margin='dense'
-                                                    type='number'
-                                                ></TextField>
-                                            </TableCell>
-                                            <TableCell>
-                                                <TextField
-                                                    variant='outlined'
-                                                    margin='dense'
-                                                    type='number'
-                                                ></TextField>
-                                            </TableCell>
-
-                                            <TableCell>
-                                                <HighlightOffOutlinedIcon
-                                                    color='error'
-                                                    margin='dense'
-                                                ></HighlightOffOutlinedIcon>
-                                            </TableCell>
-                                        </TableRow>
+                                        
+                                        )}
                                     </TableBody>
                                 </Table>
                                 <Box textAlign='right' m={2} mr={8}>
-                                    <IconButton size='medium' color='primary'>
+                                    <IconButton size='medium' color='primary' onClick = {this.addRow}>
                                         <AddCircleOutlineIcon fontSize='large'></AddCircleOutlineIcon>
                                     </IconButton>
                                 </Box>
