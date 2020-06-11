@@ -53,6 +53,7 @@ const Home = (props) => {
             console.log(materialValue.stock)
             console.log(inputValue[i].len)
             if (inputValue[i].len > materialValue.stock) {
+                console.log("this is excuting")
                 let array = [...inputValue]
                 array[i].error = "Must be less than stock length"
                 error = true
