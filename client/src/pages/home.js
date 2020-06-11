@@ -135,6 +135,7 @@ export class Home extends React.Component {
                                                     color='error'
                                                     margin='dense'
                                                     onClick = {() => this.removeRow(index)}
+                                                    style = {{cursor: "pointer"}}
                                                 ></HighlightOffOutlinedIcon>
                                             </TableCell>
                                         </TableRow>
