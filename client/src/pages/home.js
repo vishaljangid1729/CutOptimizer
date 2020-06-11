@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import Container from "@material-ui/core/Container"
 import {
@@ -18,29 +18,18 @@ import { cardStyle } from "./style"
 import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined"
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline"
 
-export class Home extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            inputValue: [
-                {
-                    "length": null,
-                    "quantity": null
-                }
-            ]
-        }
+const Home = (props)=> {
+    
+    const [inputValue, changeInput] = useState([{"length": null, "quantity": null}])
+    const addRow = () =>{
+        changeInput(inputValue.concat({"length": null, "quantity": null}));
     }
-    addRow = () =>{
-        this.setState(previousState => ({
-            inputValue: [...previousState.inputValue, {"length": null, "quantity": null}]
-        }))
-    }
-    removeRow = (index) =>{
-        let array = [...this.state.inputValue]
+    const removeRow = (index) =>{
+        let array = [...inputValue]
         array.splice(index, 1);
-        this.setState({inputValue: array});
+        changeInput(array);
     }
-    render() {
+    
         // const cardStyle = useStyles();
         return (
             <React.Fragment>
@@ -110,7 +99,7 @@ export class Home extends React.Component {
                                     </TableHead>
 
                                     <TableBody>
-                                        {this.state.inputValue.map((value, index) =>
+                                        {inputValue.map((value, index) =>
                                             <TableRow key = {index}>
                                             <TableCell padding='none'>
                                                 {index + 1}
@@ -134,7 +123,7 @@ export class Home extends React.Component {
                                                 <HighlightOffOutlinedIcon
                                                     color='error'
                                                     margin='dense'
-                                                    onClick = {() => this.removeRow(index)}
+                                                    onClick = {() => removeRow(index)}
                                                     style = {{cursor: "pointer"}}
                                                 ></HighlightOffOutlinedIcon>
                                             </TableCell>
@@ -144,7 +133,7 @@ export class Home extends React.Component {
                                     </TableBody>
                                 </Table>
                                 <Box textAlign='right' m={2} mr={8}>
-                                    <IconButton size='medium' color='primary' onClick = {this.addRow}>
+                                    <IconButton size='medium' color='primary' onClick = {addRow}>
                                         <AddCircleOutlineIcon fontSize='large'></AddCircleOutlineIcon>
                                     </IconButton>
                                 </Box>
@@ -154,5 +143,7 @@ export class Home extends React.Component {
                 </Container>
             </React.Fragment>
         )
-    }
+    
 }
+
+export {Home}
