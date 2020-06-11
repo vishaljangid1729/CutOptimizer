@@ -20,14 +20,33 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline"
 
 const Home = (props)=> {
     
-    const [inputValue, changeInput] = useState([{"length": null, "quantity": null}])
+    const [inputValue, changeInput] = useState([{"length": 0, "quantity": 0, "error": null}])
+    const [materialValue, changeMaterial] = useState({"stock": 0, "kerf": 0, "error": null});
     const addRow = () =>{
-        changeInput(inputValue.concat({"length": null, "quantity": null}));
+        changeInput(inputValue.concat({"length": 0, "quantity": 0}));
     }
     const removeRow = (index) =>{
         let array = [...inputValue]
         array.splice(index, 1);
         changeInput(array);
+    }
+    const handleChange = (e, index = -1) =>{
+        console.log(e.target.name)
+        if(e.target.name === "stock") {
+            const kerf = materialValue.kerf;
+            changeMaterial({"stock": e.target.value, kerf});
+        }else if(e.target.name === "kerf") {
+            const stock = materialValue.stock;
+            changeMaterial({stock, "kerf": e.target.value})
+        }else if(e.target.name === "length") {
+            let array = [...inputValue];
+            array[index].length = e.target.value;
+            changeInput(array);
+        }else if(e.target.name === "quantity") {
+            let array = [...inputValue];
+            array[index].quantity = e.target.value;
+            changeInput(array);
+        }
     }
     
         // const cardStyle = useStyles();
@@ -60,6 +79,9 @@ const Home = (props)=> {
                                             type='number'
                                             required
                                             helperText='Type material length'
+                                            name = "stock"
+                                            value = {materialValue.stock}
+                                            onChange = {(e) => {handleChange(e)}}
                                         ></TextField>
                                     </Box>
                                     <Box>
@@ -69,6 +91,10 @@ const Home = (props)=> {
                                             margin='dense'
                                             fullWidth
                                             helperText='Leave empty if kerf width is '
+                                            name = "kerf"
+                                            type = "number"
+                                            value = {materialValue.kerf}
+                                            onChange = {(e) => {handleChange(e)}}
                                         ></TextField>
                                     </Box>
                                 </Box>
@@ -103,12 +129,16 @@ const Home = (props)=> {
                                             <TableRow key = {index}>
                                             <TableCell padding='none'>
                                                 {index + 1}
+                                                {console.log(value)}
                                             </TableCell>
                                             <TableCell>
                                                 <TextField
                                                     variant='outlined'
                                                     margin='dense'
                                                     type='number'
+                                                    value = {value.length}
+                                                    name = "length"
+                                                    onChange = {(e) => {handleChange(e, index)}}
                                                 ></TextField>
                                             </TableCell>
                                             <TableCell>
@@ -116,6 +146,9 @@ const Home = (props)=> {
                                                     variant='outlined'
                                                     margin='dense'
                                                     type='number'
+                                                    value = {value.quantity}
+                                                    name = "quantity"
+                                                    onChange = {(e) =>{handleChange(e, index)}}
                                                 ></TextField>
                                             </TableCell>
 
