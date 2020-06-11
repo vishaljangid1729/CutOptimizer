@@ -13,15 +13,18 @@ import {
     TableHead,
     TableBody,
     IconButton,
+    Button,
 } from "@material-ui/core"
 import { cardStyle } from "./style"
 import HighlightOffOutlinedIcon from "@material-ui/icons/HighlightOffOutlined"
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline"
+import { Solution } from "./solution"
 
 const Home = (props)=> {
     
     const [inputValue, changeInput] = useState([{"length": 0, "quantity": 0, "error": null}])
     const [materialValue, changeMaterial] = useState({"stock": 0, "kerf": 0, "error": null});
+    const [solution, alterPage] = useState(false);
     const addRow = () =>{
         changeInput(inputValue.concat({"length": 0, "quantity": 0}));
     }
@@ -30,16 +33,43 @@ const Home = (props)=> {
         array.splice(index, 1);
         changeInput(array);
     }
+    const checkError = () =>{
+        let error = false;
+        if(materialValue.stock <= 0) {
+
+            let value = {...materialValue};
+            value.error = "Can't be 0."
+            changeMaterial(value);
+            error = true;
+        }
+        for(let i = 0; i < inputValue.length; i++) {
+            if(inputValue[i].length > materialValue.stock){
+                let array = [...inputValue];
+                array[i].error = "Must be less than stock length";
+                error = true;
+                changeInput(array);
+            } 
+        }
+        
+        return error;
+    }
+    const onSubmit = () =>{
+        if(!checkError()) {
+            alterPage(true);
+        }
+    }
     const handleChange = (e, index = -1) =>{
         console.log(e.target.name)
+        console.log(materialValue.stock)
         if(e.target.name === "stock" && e.target.value >= 0) {
             const kerf = materialValue.kerf;
-            changeMaterial({"stock": e.target.value, kerf});
+            changeMaterial({"stock": e.target.value, kerf, error: null});
         }else if(e.target.name === "kerf" && e.target.value >= 0) {
             const stock = materialValue.stock;
-            changeMaterial({stock, "kerf": e.target.value})
+            changeMaterial({stock, "kerf": e.target.value, error : null})
         }else if(e.target.name === "length" && e.target.value >= 0) {
             let array = [...inputValue];
+            array[index].error = null;
             array[index].length = e.target.value;
             changeInput(array);
             
@@ -52,6 +82,9 @@ const Home = (props)=> {
     }
     
         // const cardStyle = useStyles();
+        if(solution) {
+            return <Solution></Solution>
+        }
         return (
             <React.Fragment>
                 <CssBaseline />
@@ -80,9 +113,10 @@ const Home = (props)=> {
                                             fullWidth
                                             type='number'
                                             required
-                                            helperText='Type material length'
                                             name = "stock"
                                             value = {materialValue.stock}
+                                            error = {materialValue.error === null ? false:true}
+                                            helperText = {materialValue.error !== null ? materialValue.error : "Type material length"}
                                             onChange = {(e) => {handleChange(e)}}
                                         ></TextField>
                                     </Box>
@@ -140,6 +174,8 @@ const Home = (props)=> {
                                                     type='number'
                                                     value = {value.length}
                                                     name = "length"
+                                                    error = {value.error === null ? false: true}
+                                                    helperText = {value.error}
                                                     onChange = {(e) => {handleChange(e, index)}}
                                                 ></TextField>
                                             </TableCell>
@@ -171,6 +207,12 @@ const Home = (props)=> {
                                     <IconButton size='medium' color='primary' onClick = {addRow}>
                                         <AddCircleOutlineIcon fontSize='large'></AddCircleOutlineIcon>
                                     </IconButton>
+                                </Box>
+                                <Box m = {2}>
+                                    <Button
+                                    variant = "contained"
+                                    onClick = {onSubmit}
+                                    >Solve</Button>
                                 </Box>
                             </CardContent>
                         </Card>
