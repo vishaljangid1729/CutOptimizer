@@ -83,7 +83,7 @@ const Home = (props)=> {
     
         // const cardStyle = useStyles();
         if(solution) {
-            return <Solution></Solution>
+            return <Solution data = {[materialValue, inputValue]} ></Solution>
         }
         return (
             <React.Fragment>
