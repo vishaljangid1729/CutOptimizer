@@ -32,19 +32,21 @@ const Home = (props)=> {
     }
     const handleChange = (e, index = -1) =>{
         console.log(e.target.name)
-        if(e.target.name === "stock") {
+        if(e.target.name === "stock" && e.target.value >= 0) {
             const kerf = materialValue.kerf;
             changeMaterial({"stock": e.target.value, kerf});
-        }else if(e.target.name === "kerf") {
+        }else if(e.target.name === "kerf" && e.target.value >= 0) {
             const stock = materialValue.stock;
             changeMaterial({stock, "kerf": e.target.value})
-        }else if(e.target.name === "length") {
+        }else if(e.target.name === "length" && e.target.value >= 0) {
             let array = [...inputValue];
             array[index].length = e.target.value;
             changeInput(array);
-        }else if(e.target.name === "quantity") {
-            let array = [...inputValue];
-            array[index].quantity = e.target.value;
+            
+        }else if(e.target.name === "quantity" && e.target.value >= 0) {
+            let array = [...inputValue]
+            
+            array[index].quantity = parseInt(e.target.value);
             changeInput(array);
         }
     }
