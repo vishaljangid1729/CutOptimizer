@@ -47,16 +47,12 @@ const Home = (props) => {
       changeMaterial(value)
       error = true
     }
-    // console.log(inputValue)
     let array = [...inputValue]
 
     for (let i = 0; i < array.length; i++) {
-      console.log(materialValue.stock)
-      console.log(inputValue[i].len)
-      const len = array[i].len;
+      const len = array[i].len
       const rod = materialValue.stock
       if (parseFloat(len) > parseFloat(rod)) {
-        console.log('this is excuting')
         array[i].error = 'Must be less than stock length'
         error = true
         changeInput(array)
@@ -99,7 +95,8 @@ const Home = (props) => {
         to={{
           pathname: '/solution',
           state: { data: [materialValue, inputValue] },
-        }}></Redirect>
+        }}
+      ></Redirect>
     )
   }
   return (
@@ -112,7 +109,8 @@ const Home = (props) => {
               <Typography
                 className={cardStyle.title}
                 color="textPrimary"
-                gutterBottom>
+                gutterBottom
+              >
                 Material Information
               </Typography>
 
@@ -135,7 +133,8 @@ const Home = (props) => {
                     }
                     onChange={(e) => {
                       handleChange(e)
-                    }}></TextField>
+                    }}
+                  ></TextField>
                 </Box>
                 <Box>
                   <TextField
@@ -149,7 +148,8 @@ const Home = (props) => {
                     value={materialValue.kerf}
                     onChange={(e) => {
                       handleChange(e)
-                    }}></TextField>
+                    }}
+                  ></TextField>
                 </Box>
               </Box>
             </CardContent>
@@ -161,7 +161,8 @@ const Home = (props) => {
               <Typography
                 className={cardStyle.title}
                 color="textPrimary"
-                gutterBottom>
+                gutterBottom
+              >
                 Required part lengths and quantities
               </Typography>
 
@@ -190,7 +191,8 @@ const Home = (props) => {
                           helperText={value.error}
                           onChange={(e) => {
                             handleChange(e, index)
-                          }}></TextField>
+                          }}
+                        ></TextField>
                       </TableCell>
                       <TableCell>
                         <TextField
@@ -201,7 +203,8 @@ const Home = (props) => {
                           name="quantity"
                           onChange={(e) => {
                             handleChange(e, index)
-                          }}></TextField>
+                          }}
+                        ></TextField>
                       </TableCell>
 
                       <TableCell>
@@ -211,7 +214,8 @@ const Home = (props) => {
                           onClick={() => removeRow(index)}
                           style={{
                             cursor: 'pointer',
-                          }}></HighlightOffOutlinedIcon>
+                          }}
+                        ></HighlightOffOutlinedIcon>
                       </TableCell>
                     </TableRow>
                   ))}
