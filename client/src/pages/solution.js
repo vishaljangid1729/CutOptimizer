@@ -158,7 +158,7 @@ const solutionData = (raw_data, algo_data) => {
       pices: cuts,
     })
   }
-  const used = ((total_stock_length / stock_length) * stock_req).toFixed(2)
+  const used = ((total_stock_length) / (stock_length * stock_req) * 100).toFixed(2);
   return {
     stock_length,
     stock_req,
