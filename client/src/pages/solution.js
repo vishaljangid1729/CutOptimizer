@@ -1,15 +1,93 @@
 import React from 'react'
 
 import { calculate } from './../algorithm/algorithm'
-import { Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
+import { Chart } from '../components/chart'
+import {
+  Box,
+  CssBaseline,
+  Container,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Typography,
+} from '@material-ui/core'
+const data_chart = [
+  {
+    id: 'Waste',
+    label: 'Waste',
+    value: 18,
+    color: '#f50057',
+  },
+  {
+    id: 'Used',
+    label: 'Used',
+    value: 82,
+    color: '#2196f3',
+  },
+]
 
 const Solution = (props) => {
-  const data = dataForAlgo(props.location.state.data)
+  if (!props.location.state) {
+    return <Redirect to="/"></Redirect>
+  }
 
-  console.log(calculate(data.rod_length, data.kerf, data.iteams))
-  // calculate(data.rod_length, data.kerf, data.iteams)
+  const raw_data = dataForAlgo(props.location.state.data)
+  const data = calculate(raw_data.rod_length, raw_data.kerf, raw_data.iteams)
 
-  return <Link to="/"> Back</Link>
+  console.log(data)
+
+  return (
+    <>
+      <CssBaseline></CssBaseline>
+      <div style={{ height: '20rem' }}>
+        <Chart data={data_chart}></Chart>
+      </div>
+
+      <Container maxWidth="md">
+        <Box>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <Typography variant="h4"> Requird stock </Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <Typography variant="h3" color="primary">
+                    {' '}
+                    3{' '}
+                  </Typography>
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell>
+                  <Typography>
+                    Total parts: <span style={{ marginLeft: '2rem' }}>4 </span>
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>
+                    Total parts length:{' '}
+                    <span style={{ marginLeft: '2rem' }}>4 </span>{' '}
+                  </Typography>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <Typography>
+                    {' '}
+                    Stock length <span style={{ marginLeft: '2rem' }}>4 </span>
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Box>
+      </Container>
+    </>
+  )
 }
 
 const dataForAlgo = (data) => {
