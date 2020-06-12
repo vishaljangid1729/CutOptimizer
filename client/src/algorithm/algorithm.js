@@ -43,7 +43,7 @@ const MMFD = (rod_length, kerf, items) => {
     const size = required.length
     let newRod = true
     // console.log(large[i])
-    console.log(size)
+    // console.log(size)
     for (let j = 0; j < size; j++) {
       if (large[i] + required[j].sum <= rod_length) {
         required[j].arr.push(large[i])
@@ -60,7 +60,7 @@ const MMFD = (rod_length, kerf, items) => {
     const size = required.length
     let newRod = true
     // console.log(large[i])
-    console.log(size)
+    // console.log(size)
     for (let j = 0; j < size; j++) {
       if (medium[i] + required[j].sum <= rod_length) {
         required[j].arr.push(medium[i])
@@ -77,7 +77,7 @@ const MMFD = (rod_length, kerf, items) => {
     const size = required.length
     let newRod = true
     // console.log(large[i])
-    console.log(size)
+    // console.log(size)
     for (let j = 0; j < size; j++) {
       if (small[i] + required[j].sum <= rod_length) {
         required[j].arr.push(small[i])
@@ -94,7 +94,7 @@ const MMFD = (rod_length, kerf, items) => {
     const size = required.length
     let newRod = true
     // console.log(large[i])
-    console.log(size)
+    // console.log(size)
     for (let j = 0; j < size; j++) {
       if (tiny[i] + required[j].sum <= rod_length) {
         required[j].arr.push(tiny[i])

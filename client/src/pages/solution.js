@@ -12,6 +12,7 @@ import {
   TableRow,
   TableCell,
   Typography,
+  TableHead,
 } from '@material-ui/core'
 const data_chart = [
   {
@@ -35,6 +36,7 @@ const Solution = (props) => {
 
   const raw_data = dataForAlgo(props.location.state.data)
   const data = calculate(raw_data.rod_length, raw_data.kerf, raw_data.iteams)
+  const solution_data = solutionData(raw_data, data)
 
   console.log(data)
 
@@ -55,8 +57,7 @@ const Solution = (props) => {
                 </TableCell>
                 <TableCell align="left">
                   <Typography variant="h3" color="primary">
-                    {' '}
-                    3{' '}
+                    {solution_data.stock_req}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -64,13 +65,20 @@ const Solution = (props) => {
               <TableRow>
                 <TableCell>
                   <Typography>
-                    Total parts: <span style={{ marginLeft: '2rem' }}>4 </span>
+                    Total parts:{' '}
+                    <span style={{ marginLeft: '2rem' }}>
+                      {' '}
+                      {solution_data.total_parts}{' '}
+                    </span>
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography>
                     Total parts length:{' '}
-                    <span style={{ marginLeft: '2rem' }}>4 </span>{' '}
+                    <span style={{ marginLeft: '2rem' }}>
+                      {' '}
+                      {solution_data.total_stock_length}{' '}
+                    </span>{' '}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -78,12 +86,35 @@ const Solution = (props) => {
                 <TableCell>
                   <Typography>
                     {' '}
-                    Stock length <span style={{ marginLeft: '2rem' }}>4 </span>
+                    Stock length{' '}
+                    <span style={{ marginLeft: '2rem' }}>
+                      {' '}
+                      {solution_data.stock_length}{' '}
+                    </span>
                   </Typography>
                 </TableCell>
               </TableRow>
             </TableBody>
           </Table>
+          <Box mt={5} mb={5}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>#</TableCell>
+                  <TableCell>Pices</TableCell>
+                  <TableCell>Waste</TableCell>
+                </TableRow>
+
+                {solution_data.rods.map((data, index) => (
+                  <TableRow>
+                    <TableCell> {index + 1}</TableCell>
+                    <TableCell> {data.pices} </TableCell>
+                    <TableCell> {data.waste} </TableCell>
+                  </TableRow>
+                ))}
+              </TableHead>
+            </Table>
+          </Box>
         </Box>
       </Container>
     </>
@@ -102,6 +133,25 @@ const dataForAlgo = (data) => {
     kerf,
     iteams,
   }
+}
+
+const solutionData = (raw_data, algo_data) => {
+  const stock_length = raw_data.rod_length
+  const stock_req = algo_data.length
+  let total_stock_length = 0
+  let total_parts = 0
+  let rods = []
+  console.log(algo_data[0].sum)
+  for (let i = 0; i < stock_req; i++) {
+    total_stock_length += algo_data[i].sum
+    total_parts += algo_data[i].arr.length
+    let cuts = ''
+    for (let j = 0; j < algo_data[i].arr.length; j++) {
+      cuts += ` ${algo_data[i].arr[j]},\xa0\xa0`
+    }
+    rods.push({ waste: stock_length - algo_data[i].sum, pices: cuts })
+  }
+  return { stock_length, stock_req, total_stock_length, total_parts, rods }
 }
 
 export { Solution }
