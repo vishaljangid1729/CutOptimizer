@@ -37,7 +37,8 @@ const Solution = (props) => {
   const raw_data = dataForAlgo(props.location.state.data)
   const data = calculate(raw_data.rod_length, raw_data.kerf, raw_data.iteams)
   const solution_data = solutionData(raw_data, data)
-
+  data_chart[1].value = solution_data.used
+  data_chart[0].value = (100.0 - solution_data.used).toFixed(2)
   console.log(data)
 
   return (
@@ -141,7 +142,6 @@ const solutionData = (raw_data, algo_data) => {
   let total_stock_length = 0
   let total_parts = 0
   let rods = []
-  console.log(algo_data[0].sum)
   for (let i = 0; i < stock_req; i++) {
     total_stock_length += algo_data[i].sum
     total_parts += algo_data[i].arr.length
@@ -158,7 +158,15 @@ const solutionData = (raw_data, algo_data) => {
       pices: cuts,
     })
   }
-  return { stock_length, stock_req, total_stock_length, total_parts, rods }
+  const used = ((total_stock_length / stock_length) * stock_req).toFixed(2)
+  return {
+    stock_length,
+    stock_req,
+    total_stock_length,
+    total_parts,
+    rods,
+    used,
+  }
 }
 
 export { Solution }
