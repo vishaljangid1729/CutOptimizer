@@ -21,9 +21,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "prettier '**/*.js' --write",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "format": "prettier '**/*.js' --write"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,6 +40,5 @@
   },
   "devDependencies": {
     "prettier": "2.0.5"
-  }, 
-  "homepage": "http://vishaljangid1729.github.io/CutOptimizer"
+  }
 }
