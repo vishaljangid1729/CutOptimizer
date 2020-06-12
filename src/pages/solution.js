@@ -13,6 +13,7 @@ import {
   TableCell,
   Typography,
   TableHead,
+  Button,
 } from '@material-ui/core'
 const data_chart = [
   {
@@ -49,6 +50,19 @@ const Solution = (props) => {
       </div>
 
       <Container maxWidth="md">
+        <Box textAlign="right">
+          <Button style={{ marginRight: '1rem' }} href="/">
+            New
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              window.print()
+            }}
+          >
+            Print
+          </Button>
+        </Box>
         <Box>
           <Table>
             <TableBody>
@@ -158,7 +172,10 @@ const solutionData = (raw_data, algo_data) => {
       pices: cuts,
     })
   }
-  const used = ((total_stock_length) / (stock_length * stock_req) * 100).toFixed(2);
+  const used = (
+    (total_stock_length / (stock_length * stock_req)) *
+    100
+  ).toFixed(2)
   return {
     stock_length,
     stock_req,
