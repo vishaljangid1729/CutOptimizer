@@ -147,9 +147,16 @@ const solutionData = (raw_data, algo_data) => {
     total_parts += algo_data[i].arr.length
     let cuts = ''
     for (let j = 0; j < algo_data[i].arr.length; j++) {
-      cuts += ` ${algo_data[i].arr[j]},\xa0\xa0`
+      if (j === algo_data[i].arr.length - 1) {
+        cuts += ` ${algo_data[i].arr[j].toFixed(2)}\xa0\xa0\xa0\xa0`
+      } else {
+        cuts += ` ${algo_data[i].arr[j].toFixed(2)},\xa0\xa0\xa0\xa0`
+      }
     }
-    rods.push({ waste: stock_length - algo_data[i].sum, pices: cuts })
+    rods.push({
+      waste: (stock_length - algo_data[i].sum).toFixed(2),
+      pices: cuts,
+    })
   }
   return { stock_length, stock_req, total_stock_length, total_parts, rods }
 }
