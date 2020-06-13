@@ -2,7 +2,7 @@ import React from 'react'
 
 import { calculate } from './../algorithm/algorithm'
 import { Redirect } from 'react-router-dom'
-import { Chart } from '../components/chart'
+import { Chart } from '../components/solution/chart'
 import {
   Box,
   CssBaseline,

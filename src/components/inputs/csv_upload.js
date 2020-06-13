@@ -7,7 +7,7 @@ const CsvUpload = (props) => {
       <input
         accept="image/*"
         id="contained-button-file"
-        style = {{display: "none"}}
+        style={{ display: 'none' }}
         multiple
         type="file"
       />
