@@ -103,10 +103,7 @@ const ManualEntry = (props) => {
         <Box mt={4}>
           <Card>
             <CardContent>
-              <Typography
-                color="textPrimary"
-                gutterBottom
-              >
+              <Typography color="textPrimary" gutterBottom>
                 Material Information
               </Typography>
 
@@ -154,10 +151,7 @@ const ManualEntry = (props) => {
         <Box mt={4}>
           <Card>
             <CardContent>
-              <Typography
-                color="textPrimary"
-                gutterBottom
-              >
+              <Typography color="textPrimary" gutterBottom>
                 Required part lengths and quantities
               </Typography>
 
