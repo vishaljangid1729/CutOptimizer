@@ -16,22 +16,21 @@ import {
   IconButton,
   Button,
 } from '@material-ui/core'
-import { cardStyle } from './style'
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 
 const ManualEntry = (props) => {
   const [inputValue, changeInput] = useState([
-    { len: 0, quantity: 0, error: null },
+    { len: '', quantity: '', error: null },
   ])
   const [materialValue, changeMaterial] = useState({
-    stock: 0,
+    stock: '',
     kerf: 0,
     error: null,
   })
   const [solution, alterPage] = useState(false)
   const addRow = () => {
-    changeInput(inputValue.concat({ len: 0, quantity: 0 }))
+    changeInput(inputValue.concat({ len: '', quantity: '' }))
   }
   const removeRow = (index) => {
     let array = [...inputValue]
@@ -87,7 +86,6 @@ const ManualEntry = (props) => {
     }
   }
 
-  // const cardStyle = useStyles();
   if (solution) {
     return (
       <Redirect
@@ -103,10 +101,9 @@ const ManualEntry = (props) => {
       <CssBaseline />
       <Container maxWidth="md">
         <Box mt={4}>
-          <Card className={cardStyle.root}>
+          <Card>
             <CardContent>
               <Typography
-                className={cardStyle.title}
                 color="textPrimary"
                 gutterBottom
               >
@@ -155,10 +152,9 @@ const ManualEntry = (props) => {
           </Card>
         </Box>
         <Box mt={4}>
-          <Card className={cardStyle.root}>
+          <Card>
             <CardContent>
               <Typography
-                className={cardStyle.title}
                 color="textPrimary"
                 gutterBottom
               >
