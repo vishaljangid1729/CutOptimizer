@@ -9,8 +9,24 @@ import {
   CardContent,
 } from '@material-ui/core'
 import { Link } from 'react-router-dom'
+import { parse } from 'csv'
+import { useState } from 'react'
 
 const CSVEntry = (props) => {
+  const [error, chageError] = useState(false)
+  let fileReader
+
+  const handleFileRead = (e) => {
+    const content = fileReader.result
+    parse(content, (err, data) => {
+      err ? chageError(true) : chageError(false)
+    })
+  }
+  const handleFileChosen = (file) => {
+    fileReader = new FileReader()
+    fileReader.onloadend = handleFileRead
+    fileReader.readAsBinaryString(file)
+  }
   return (
     <>
       <CssBaseline></CssBaseline>
@@ -44,11 +60,12 @@ const CSVEntry = (props) => {
             <CardContent>
               <div>
                 <input
-                  accept="image/*"
+                  accept=".csv"
                   id="contained-button-file"
                   style={{ display: 'none' }}
                   multiple
                   type="file"
+                  onChange={(e) => handleFileChosen(e.target.files[0])}
                 />
                 <label htmlFor="contained-button-file">
                   <Button variant="contained" color="primary" component="span">
@@ -56,6 +73,15 @@ const CSVEntry = (props) => {
                   </Button>
                 </label>
               </div>
+              {error ? (
+                <CardContent>
+                  <Typography>
+                    There is some problem in uploading file
+                  </Typography>
+                </CardContent>
+              ) : (
+                ''
+              )}
             </CardContent>
           </Card>
         </Box>
