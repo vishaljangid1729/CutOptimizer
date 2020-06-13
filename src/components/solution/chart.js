@@ -7,7 +7,6 @@ import { ResponsivePie } from '@nivo/pie'
 // website examples showcase many properties,
 // you'll often use just a few of them.
 const Chart = (props) => {
-  console.log(props.data)
   return (
     <ResponsivePie
       data={props.data}
@@ -55,51 +54,15 @@ const Chart = (props) => {
       fill={[
         {
           match: {
-            id: 'ruby',
+            id: 'Used',
           },
-          id: 'dots',
+          id: 'Used',
         },
         {
           match: {
-            id: 'c',
+            id: 'Waste',
           },
-          id: 'dots',
-        },
-        {
-          match: {
-            id: 'go',
-          },
-          id: 'dots',
-        },
-        {
-          match: {
-            id: 'python',
-          },
-          id: 'dots',
-        },
-        {
-          match: {
-            id: 'scala',
-          },
-          id: 'lines',
-        },
-        {
-          match: {
-            id: 'lisp',
-          },
-          id: 'lines',
-        },
-        {
-          match: {
-            id: 'elixir',
-          },
-          id: 'lines',
-        },
-        {
-          match: {
-            id: 'javascript',
-          },
-          id: 'lines',
+          id: 'Waste',
         },
       ]}
       legends={[

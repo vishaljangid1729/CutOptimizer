@@ -2,7 +2,7 @@ import React from 'react'
 
 import { calculate } from './../algorithm/algorithm'
 import { Redirect } from 'react-router-dom'
-import { Chart } from '../components/chart'
+import { Chart } from '../components/solution/chart'
 import {
   Box,
   CssBaseline,
@@ -13,6 +13,7 @@ import {
   TableCell,
   Typography,
   TableHead,
+  Button,
 } from '@material-ui/core'
 const data_chart = [
   {
@@ -37,9 +38,8 @@ const Solution = (props) => {
   const raw_data = dataForAlgo(props.location.state.data)
   const data = calculate(raw_data.rod_length, raw_data.kerf, raw_data.iteams)
   const solution_data = solutionData(raw_data, data)
-  data_chart[1].value = solution_data.used
-  data_chart[0].value = (100.0 - solution_data.used).toFixed(2)
-  console.log(data)
+  data_chart[1].value = Number(solution_data.used)
+  data_chart[0].value = Number((100.0 - solution_data.used).toFixed(2))
 
   return (
     <>
@@ -49,12 +49,25 @@ const Solution = (props) => {
       </div>
 
       <Container maxWidth="md">
+        <Box textAlign="right">
+          <Button style={{ marginRight: '1rem' }} href="/">
+            New
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              window.print()
+            }}
+          >
+            Print
+          </Button>
+        </Box>
         <Box>
           <Table>
             <TableBody>
               <TableRow>
                 <TableCell>
-                  <Typography variant="h4"> Requird stock </Typography>
+                  <Typography variant="h4"> Required stock </Typography>
                 </TableCell>
                 <TableCell align="left">
                   <Typography variant="h3" color="primary">
@@ -107,7 +120,7 @@ const Solution = (props) => {
                 </TableRow>
 
                 {solution_data.rods.map((data, index) => (
-                  <TableRow>
+                  <TableRow key={index}>
                     <TableCell> {index + 1}</TableCell>
                     <TableCell> {data.pices} </TableCell>
                     <TableCell> {data.waste} </TableCell>
@@ -158,7 +171,11 @@ const solutionData = (raw_data, algo_data) => {
       pices: cuts,
     })
   }
-  const used = ((total_stock_length) / (stock_length * stock_req) * 100).toFixed(2);
+  const used = (
+    (total_stock_length / (stock_length * stock_req)) *
+    100
+  ).toFixed(2)
+  total_stock_length = total_stock_length.toFixed(2)
   return {
     stock_length,
     stock_req,
