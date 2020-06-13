@@ -89,4 +89,16 @@ const CSVEntry = (props) => {
     </>
   )
 }
+
+const formatData = (data) =>{
+  let info = [];
+  info.push({"stock_length": data[0][1], "kref": data[1][1]});
+  let length_info = []
+  for(let i = 4; i < data.length; i++) {
+    length_info.push({"len": data[i][0], "quantity": data[i][1]});
+  }
+  info.push(length_info);
+  return info;
+}
+
 export { CSVEntry }
