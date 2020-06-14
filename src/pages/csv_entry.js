@@ -8,24 +8,46 @@ import {
   Card,
   CardContent,
 } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { parse } from 'csv'
 import { useState } from 'react'
 
 const CSVEntry = (props) => {
   const [error, chageError] = useState(false)
+  const [redirect, chageRedirect] = useState(false)
+  const [data_to_send, setData] = useState(null)
   let fileReader
 
   const handleFileRead = (e) => {
     const content = fileReader.result
     parse(content, (err, data) => {
       err ? chageError(true) : chageError(false)
+      data = formatData(data)
+      setData(data)
+      next()
     })
   }
   const handleFileChosen = (file) => {
     fileReader = new FileReader()
     fileReader.onloadend = handleFileRead
     fileReader.readAsBinaryString(file)
+  }
+  const next = () => {
+    if (!error) {
+      chageRedirect(true)
+    } else {
+      chageRedirect(false)
+    }
+  }
+  if (redirect) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/manual',
+          state: { data: data_to_send },
+        }}
+      ></Redirect>
+    )
   }
   return (
     <>
@@ -90,15 +112,15 @@ const CSVEntry = (props) => {
   )
 }
 
-const formatData = (data) =>{
-  let info = [];
-  info.push({"stock_length": data[0][1], "kref": data[1][1]});
+const formatData = (data) => {
+  let info = []
+  info.push({ stock_length: data[0][1], kref: data[1][1] })
   let length_info = []
-  for(let i = 4; i < data.length; i++) {
-    length_info.push({"len": data[i][0], "quantity": data[i][1]});
+  for (let i = 4; i < data.length; i++) {
+    length_info.push({ len: data[i][0], quantity: data[i][1] })
   }
-  info.push(length_info);
-  return info;
+  info.push(length_info)
+  return info
 }
 
 export { CSVEntry }
