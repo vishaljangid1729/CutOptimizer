@@ -57,7 +57,7 @@ const CSVEntry = (props) => {
           <Card>
             <CardContent>
               <Typography>
-                Downlaod CSV file and fill the required details
+                Download the CSV file and fill the required details.
               </Typography>
             </CardContent>
             <CardContent>
@@ -77,7 +77,9 @@ const CSVEntry = (props) => {
         <Box mt={3}>
           <Card>
             <CardContent>
-              <Typography>Upload that csv file with filled data</Typography>
+              <Typography>
+                Upload downloaded CSV files with filled data.
+              </Typography>
             </CardContent>
             <CardContent>
               <div>

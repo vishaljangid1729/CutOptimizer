@@ -18,6 +18,7 @@ import {
 } from '@material-ui/core'
 import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
+import { useEffect } from 'react'
 
 const ManualEntry = (props) => {
   const [inputValue, changeInput] = useState([
@@ -28,6 +29,28 @@ const ManualEntry = (props) => {
     kerf: 0,
     error: null,
   })
+  useEffect(() => {
+    if (props.location.state) {
+      const stock = props.location.state.data[0].stock_length
+      const kerf = props.location.state.data[0].kref
+
+      changeMaterial({ stock, kerf, error: null })
+
+      const lenght_qty_info = []
+
+      for (let i = 0; i < props.location.state.data[1].length; i++) {
+        lenght_qty_info.push({
+          len: props.location.state.data[1][i].len,
+          quantity: props.location.state.data[1][i].quantity,
+          error: null,
+        })
+      }
+      changeInput(lenght_qty_info)
+    } else {
+      console.log('Thsta prefect')
+    }
+  }, [])
+
   const [solution, alterPage] = useState(false)
   const addRow = () => {
     changeInput(inputValue.concat({ len: '', quantity: '' }))
