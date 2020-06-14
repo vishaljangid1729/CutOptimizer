@@ -46,10 +46,8 @@ const ManualEntry = (props) => {
         })
       }
       changeInput(lenght_qty_info)
-    } else {
-      console.log('Thsta prefect')
     }
-  }, [])
+  }, [props.location.state])
 
   const [solution, alterPage] = useState(false)
   const addRow = () => {
