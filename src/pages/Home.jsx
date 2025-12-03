@@ -7,15 +7,15 @@ import {
   Typography,
   CardActions,
   Button,
-} from '@material-ui/core'
+} from '@mui/material'
 import { Link } from 'react-router-dom'
 
-const Home = (props) => {
+const Home = () => {
   return (
     <>
-      <CssBaseline></CssBaseline>
+      <CssBaseline />
       <Box display="flex" justifyContent="space-around" flexWrap="wrap" mt={20}>
-        <Card style={{ width: '20rem', margin: '1rem' }}>
+        <Card sx={{ width: '20rem', margin: '1rem' }}>
           <CardContent>
             <Typography component="h2" variant="h5">
               Use CSV
@@ -23,10 +23,7 @@ const Home = (props) => {
           </CardContent>
           <CardContent>
             <Typography variant="body1">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est nam
-              beatae obcaecati dicta corrupti cupiditate consequuntur quam
-              tenetur? Doloremque qui sequi vitae sit accusantium, quasi
-              obcaecati vero id eligendi temporibus!
+              Upload a CSV file containing your cut list to quickly generate an optimized cutting plan.
             </Typography>
           </CardContent>
           <CardActions>
@@ -38,7 +35,7 @@ const Home = (props) => {
           </CardActions>
         </Card>
 
-        <Card style={{ width: '20rem', margin: '1rem' }}>
+        <Card sx={{ width: '20rem', margin: '1rem' }}>
           <CardContent>
             <Typography component="h2" variant="h5">
               Enter manually
@@ -46,10 +43,7 @@ const Home = (props) => {
           </CardContent>
           <CardContent>
             <Typography variant="body1">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est nam
-              beatae obcaecati dicta corrupti cupiditate consequuntur quam
-              tenetur? Doloremque qui sequi vitae sit accusantium, quasi
-              obcaecati vero id eligendi temporibus!
+              Manually enter your stock length and the list of parts you need to cut.
             </Typography>
           </CardContent>
           <CardActions>

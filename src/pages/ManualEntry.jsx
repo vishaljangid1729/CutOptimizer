@@ -1,7 +1,4 @@
-import React, { useState } from 'react'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Container from '@material-ui/core/Container'
-import { Redirect } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
 import {
   Card,
   CardContent,
@@ -15,12 +12,17 @@ import {
   TableBody,
   IconButton,
   Button,
-} from '@material-ui/core'
-import HighlightOffOutlinedIcon from '@material-ui/icons/HighlightOffOutlined'
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
-import { useEffect } from 'react'
+  Container,
+  CssBaseline,
+} from '@mui/material'
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined'
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import { useNavigate, useLocation } from 'react-router-dom'
 
-const ManualEntry = (props) => {
+const ManualEntry = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
+
   const [inputValue, changeInput] = useState([
     { len: '', quantity: '', error: null },
   ])
@@ -29,35 +31,37 @@ const ManualEntry = (props) => {
     kerf: 0,
     error: null,
   })
+
   useEffect(() => {
-    if (props.location.state) {
-      const stock = props.location.state.data[0].stock_length
-      const kerf = props.location.state.data[0].kref
+    if (location.state && location.state.data) {
+      const stock = location.state.data[0].stock_length
+      const kerf = location.state.data[0].kref // Note: typo in original code 'kref'
 
       changeMaterial({ stock, kerf, error: null })
 
       const lenght_qty_info = []
 
-      for (let i = 0; i < props.location.state.data[1].length; i++) {
+      for (let i = 0; i < location.state.data[1].length; i++) {
         lenght_qty_info.push({
-          len: props.location.state.data[1][i].len,
-          quantity: props.location.state.data[1][i].quantity,
+          len: location.state.data[1][i].len,
+          quantity: location.state.data[1][i].quantity,
           error: null,
         })
       }
       changeInput(lenght_qty_info)
     }
-  }, [props.location.state])
+  }, [location.state])
 
-  const [solution, alterPage] = useState(false)
   const addRow = () => {
-    changeInput(inputValue.concat({ len: '', quantity: '' }))
+    changeInput(inputValue.concat({ len: '', quantity: '', error: null }))
   }
+
   const removeRow = (index) => {
     let array = [...inputValue]
     array.splice(index, 1)
     changeInput(array)
   }
+
   const checkError = () => {
     let error = false
     if (materialValue.stock <= 0) {
@@ -74,17 +78,23 @@ const ManualEntry = (props) => {
       if (parseFloat(len) > parseFloat(rod)) {
         array[i].error = 'Must be less than stock length'
         error = true
-        changeInput(array)
       }
+    }
+    if (error) {
+      changeInput(array)
     }
 
     return error
   }
+
   const onSubmit = () => {
     if (!checkError()) {
-      alterPage(true)
+      navigate('/solution', {
+        state: { data: [materialValue, inputValue] },
+      })
     }
   }
+
   const handleChange = (e, index = -1) => {
     if (e.target.name === 'stock' && e.target.value >= 0) {
       let value = { ...materialValue }
@@ -107,16 +117,6 @@ const ManualEntry = (props) => {
     }
   }
 
-  if (solution) {
-    return (
-      <Redirect
-        to={{
-          pathname: '/solution',
-          state: { data: [materialValue, inputValue] },
-        }}
-      ></Redirect>
-    )
-  }
   return (
     <React.Fragment>
       <CssBaseline />
@@ -139,7 +139,7 @@ const ManualEntry = (props) => {
                     required
                     name="stock"
                     value={materialValue.stock}
-                    error={materialValue.error === null ? false : true}
+                    error={materialValue.error !== null}
                     helperText={
                       materialValue.error !== null
                         ? materialValue.error
@@ -156,7 +156,7 @@ const ManualEntry = (props) => {
                     label="Kerf"
                     margin="dense"
                     fullWidth
-                    helperText="Leave empty if kerf width is "
+                    helperText="Leave empty if kerf width is 0"
                     name="kerf"
                     type="number"
                     value={materialValue.kerf}
@@ -197,7 +197,7 @@ const ManualEntry = (props) => {
                           type="number"
                           value={value.len}
                           name="length"
-                          error={value.error === null ? false : true}
+                          error={value.error !== null}
                           helperText={value.error}
                           onChange={(e) => {
                             handleChange(e, index)
@@ -218,14 +218,13 @@ const ManualEntry = (props) => {
                       </TableCell>
 
                       <TableCell>
-                        <HighlightOffOutlinedIcon
+                        <IconButton
                           color="error"
-                          margin="dense"
                           onClick={() => removeRow(index)}
-                          style={{
-                            cursor: 'pointer',
-                          }}
-                        ></HighlightOffOutlinedIcon>
+                          size="large"
+                        >
+                          <HighlightOffOutlinedIcon />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   ))}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Container,
   Box,
@@ -7,51 +7,40 @@ import {
   Typography,
   Card,
   CardContent,
-} from '@material-ui/core'
-import { Link, Redirect } from 'react-router-dom'
-import { parse } from 'csv'
-import { useState } from 'react'
+} from '@mui/material'
+import { Link, useNavigate } from 'react-router-dom'
+import Papa from 'papaparse'
 
-const CSVEntry = (props) => {
-  const [error, chageError] = useState(false)
-  const [redirect, chageRedirect] = useState(false)
-  const [data_to_send, setData] = useState(null)
-  let fileReader
+const CSVEntry = () => {
+  const [error, setError] = useState(false)
+  const navigate = useNavigate()
 
-  const handleFileRead = (e) => {
-    const content = fileReader.result
-    parse(content, (err, data) => {
-      err ? chageError(true) : chageError(false)
-      data = formatData(data)
-      setData(data)
-      next()
+  const handleFileRead = (file) => {
+    Papa.parse(file, {
+      complete: (results) => {
+        try {
+          const data = formatData(results.data)
+          navigate('/manual', { state: { data } })
+        } catch (e) {
+          console.error(e)
+          setError(true)
+        }
+      },
+      error: () => {
+        setError(true)
+      },
     })
   }
+
   const handleFileChosen = (file) => {
-    fileReader = new FileReader()
-    fileReader.onloadend = handleFileRead
-    fileReader.readAsBinaryString(file)
-  }
-  const next = () => {
-    if (!error) {
-      chageRedirect(true)
-    } else {
-      chageRedirect(false)
+    if (file) {
+      handleFileRead(file)
     }
   }
-  if (redirect) {
-    return (
-      <Redirect
-        to={{
-          pathname: '/manual',
-          state: { data: data_to_send },
-        }}
-      ></Redirect>
-    )
-  }
+
   return (
     <>
-      <CssBaseline></CssBaseline>
+      <CssBaseline />
       <Container maxWidth="md">
         <Box mt={3}>
           <Card>
@@ -68,7 +57,7 @@ const CSVEntry = (props) => {
                 style={{ textDecoration: 'none' }}
               >
                 <Button variant="contained" color="primary">
-                  Download
+                  Download Template
                 </Button>
               </Link>
             </CardContent>
@@ -87,7 +76,6 @@ const CSVEntry = (props) => {
                   accept=".csv"
                   id="contained-button-file"
                   style={{ display: 'none' }}
-                  multiple
                   type="file"
                   onChange={(e) => handleFileChosen(e.target.files[0])}
                 />
@@ -97,14 +85,12 @@ const CSVEntry = (props) => {
                   </Button>
                 </label>
               </div>
-              {error ? (
+              {error && (
                 <CardContent>
-                  <Typography>
-                    There is some problem in uploading file
+                  <Typography color="error">
+                    There is some problem in uploading or parsing the file. Please ensure it matches the template.
                   </Typography>
                 </CardContent>
-              ) : (
-                ''
               )}
             </CardContent>
           </Card>
@@ -115,11 +101,21 @@ const CSVEntry = (props) => {
 }
 
 const formatData = (data) => {
+  // Basic validation to ensure data has enough rows
+  if (data.length < 5) throw new Error('Invalid CSV format')
+
   let info = []
-  info.push({ stock_length: data[0][1], kref: data[1][1] })
+  // Assuming the CSV structure matches the previous implementation
+  // Row 0, Col 1: Stock Length
+  // Row 1, Col 1: Kerf
+  info.push({ stock_length: data[0][1], kref: data[1][1] }) // Keeping 'kref' key for compatibility with ManualEntry for now, but should fix typo globally later if possible.
+
   let length_info = []
   for (let i = 4; i < data.length; i++) {
-    length_info.push({ len: data[i][0], quantity: data[i][1] })
+    // Skip empty rows
+    if (data[i][0] && data[i][1]) {
+      length_info.push({ len: data[i][0], quantity: data[i][1] })
+    }
   }
   info.push(length_info)
   return info

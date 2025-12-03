@@ -1,8 +1,7 @@
 import React from 'react'
-
 import { calculate } from './../algorithm/algorithm'
-import { Redirect } from 'react-router-dom'
-import { Chart } from '../components/solution/chart'
+import { Navigate, useLocation } from 'react-router-dom'
+import { Chart } from '../components/solution/Chart'
 import {
   Box,
   CssBaseline,
@@ -14,7 +13,8 @@ import {
   Typography,
   TableHead,
   Button,
-} from '@material-ui/core'
+} from '@mui/material'
+
 const data_chart = [
   {
     id: 'Waste',
@@ -30,12 +30,14 @@ const data_chart = [
   },
 ]
 
-const Solution = (props) => {
-  if (!props.location.state) {
-    return <Redirect to="/"></Redirect>
+const Solution = () => {
+  const location = useLocation()
+
+  if (!location.state || !location.state.data) {
+    return <Navigate to="/" />
   }
 
-  const raw_data = dataForAlgo(props.location.state.data)
+  const raw_data = dataForAlgo(location.state.data)
   const data = calculate(raw_data.rod_length, raw_data.kerf, raw_data.iteams)
   const solution_data = solutionData(raw_data, data)
   data_chart[1].value = Number(solution_data.used)
@@ -118,7 +120,8 @@ const Solution = (props) => {
                   <TableCell>Pices</TableCell>
                   <TableCell>Waste</TableCell>
                 </TableRow>
-
+              </TableHead>
+              <TableBody>
                 {solution_data.rods.map((data, index) => (
                   <TableRow key={index}>
                     <TableCell> {index + 1}</TableCell>
@@ -126,7 +129,7 @@ const Solution = (props) => {
                     <TableCell> {data.waste} </TableCell>
                   </TableRow>
                 ))}
-              </TableHead>
+              </TableBody>
             </Table>
           </Box>
         </Box>
